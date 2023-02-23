@@ -5,34 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Role;
+use \Exception;
 class RoleController extends Controller
 {
 
 
-//    function to store role 
+//    function to store role
 
  public function store(Request $request){
     $validator=Validator::make($request->all(),[
-        'name'=>'string|required'              
+        'name'=>'string|required'
    ]);
 
   if($validator->fails()){
     $errors=$validator->errors()->getMessages();
-    $error;
-    $error_formated=array();
+    $error=[];
     foreach($errors as $key=>$value){
         $error[$key]=$value;
     }
     return response()->json(['errors'=>$error,'status'=>false],400);
   }
-  
+
   try{
 
     $role=Role::create([
         'name'=>$request->name
     ]);
-    return response()->json(['message'=>'successfully created role','status'=>true,201]);
-       
+    return response()->json(['message'=>'successfully created role','data'=>$role,'status'=>true,201]);
+
   }catch(Exception $ex){
     return response()->json(['errors'=>'server fail','status'=>false,500]);
   }
@@ -40,13 +40,12 @@ class RoleController extends Controller
 
  public function update(Request $request,$id){
     $validator=Validator::make($request->all(),[
-        'name'=>'string|required'              
+        'name'=>'string|required'
    ]);
 
   if($validator->fails()){
     $errors=$validator->errors()->getMessages();
-    $error;
-    $error_formated=array();
+    $error=[];
     foreach($errors as $key=>$value){
         $error[$key]=$value;
     }
@@ -59,7 +58,7 @@ class RoleController extends Controller
         $role->save();
     }
     return response()->json(['message'=>'successfully updated role','status'=>true,'data'=>$role],201);
-       
+
   }catch(Exception $ex){
     return response()->json(['errors'=>'server fail','status'=>false,500]);
   }

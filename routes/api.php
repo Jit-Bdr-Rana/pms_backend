@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\CompanyController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +31,7 @@ Route::delete('/role/{id}',[RoleController::class,'delete']);
 
 
 Route::post('/company',[CompanyController::class,'store']);
+Route::get('/company',[CompanyController::class,'getAll']);
+Route::get('/company/{id}',[CompanyController::class,'getById']);
+Route::put('/company/{id}',[CompanyController::class,'update']);
+Route::delete('/company/{id}',[CompanyController::class,'delete']);
