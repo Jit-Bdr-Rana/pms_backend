@@ -17,7 +17,7 @@ class CreateCompaniesTable extends Migration
             $table->id();
             $table->string('name',200);
             $table->string('symbol',200);
-            $table->string('sector',200);
+            $table->string('sector',200)->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,7 @@ class CreateCompaniesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('my_shares');
         Schema::dropIfExists('companies');
     }
 }

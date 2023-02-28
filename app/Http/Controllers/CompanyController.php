@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
+use League\Csv\Reader;
 use Validator;
 use \Exception;
 class CompanyController extends Controller
@@ -96,5 +97,51 @@ class CompanyController extends Controller
         return response()->json(['errors'=>'server fail','status'=>false,500]);
     }
   }
+
+
+  public function importCsv(Request $request){
+    $file = $request->file('csv_file');
+
+    if ($file->isValid()) {
+        // $filePath = $file->getPathname();
+
+        // $csv = new SplFileObject($filePath);
+        // $csv->setFlags(SplFileObject::READ_CSV);
+
+        // dd($csv);
+
+        // foreach ($csv as $row) {
+        //     // Process each row of the CSV file
+        //     // ...
+
+        // }
+        $csv = Reader::createFromPath($file->getPathname());
+        $c=[];
+        $isFirst=true;
+
+        foreach ($csv as $row) {
+            // Process each row of the CSV file
+            // ...
+            // c[]=$row->BUSINESS_DATE;
+
+            if($isFirst){
+                $isFirst=false;
+                continue;
+            }
+                $company=Company::create(
+                    [
+                        'symbol'=>$row[3],
+                        'name'=>$row[4]
+                    ]
+                  );
+                array_push($c,$company);
+
+
+        }
+        return response()->json(['message' => 'CSV file uploaded and processed.','data'=>$c]);
+    } else {
+        return response()->json(['error' => 'Invalid file.'], 400);
+    }
+ }
 
 }

@@ -21,10 +21,11 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('username');
             $table->bigInteger('phone');
-            $table->string('address',200); 
+            $table->string('address',200);
             $table->rememberToken();
             $table->timestamps();
         });
+        // 'password'=>bcrypt($userPassowd)
     }
 
     /**
