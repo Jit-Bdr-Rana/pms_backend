@@ -15,10 +15,11 @@ class CreateMysharesTable extends Migration
     {
         Schema::create('my_shares', function (Blueprint $table) {
             $table->id();
-            $table->string('company', 100);
-            $table->date('transaction_date')->nullable();
-            $table->integer('debit_quantity');
-            $table->integer('balance_after_transaction');
+            $table->date('transaction_date');
+            $table->string('share_type');
+            $table->integer('quantity');
+            $table->integer('debit_quantity')->nullable();
+            $table->integer('balance_after_transaction')->nullable();
             $table->integer('credit_quantity')->nullable();
             $table->double('price', 8, 2);
 

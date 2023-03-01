@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MySharesResource;
 use App\Models\MyShares;
 use Error;
 use Illuminate\Http\Request;
@@ -11,11 +12,13 @@ class MySharesController extends Controller
     public function store(Request $request){
         $validator=Validator::make($request->all(),[
           'transaction_date'=>'date',
-          'company_name'=>'string|required',
+          'company_id'=>'integer|required',
           'debit_quantity'=>'integer',
           'balance_after_transaction'=>'integer',
           'credit_quantity'=>'integer',
-          'price'=>'integer'
+          'price'=>'integer',
+          'quantity'=>'integer'
+
      ]);
       if($validator->fails()){
         $errors=$validator->errors()->getMessages();
@@ -29,12 +32,15 @@ class MySharesController extends Controller
       $my_shares=MyShares::create(
         [
 
+            'quantity'=>$request->quantity,
             'transaction_date'=>$request->transaction_date,
-            'company_name'=>$request->company_name,
             'debit_quantity'=>$request->debit_quantity,
+            'share_type'=>$request->share_type,
             'balance_after_transaction'=>$request->balance_after_transaction,
             'credit_quantity'=>$request->credit_quantity,
+            'company_id'=>$request->company_id,
             'price'=>$request->price
+
         ]
       );
       return response()->json(['message'=>'successfully created shares','status'=>true,'data'=>$my_shares,201]);
@@ -47,8 +53,9 @@ class MySharesController extends Controller
       public function getAll(){
         try{
           $my_shares=MyShares::all();
-          return response()->json(['message'=>'successfully get shares record','status'=>true,'data'=>$my_shares,201]);
-      }catch(Exception $ex){
+
+          return response()->json(['message'=>'successfully get shares record','status'=>true,'data'=>MySharesResource::collection($my_shares),201]);
+      }catch(\Exception $ex){
           return response()->json(['errors'=>'server fail','status'=>false,500]);
       }
       }
@@ -61,7 +68,9 @@ class MySharesController extends Controller
           'debit_quantity'=>'integer',
           'balance_after_transaction'=>'integer',
           'credit_quantity'=>'integer',
-          'price'=>'integer'
+          'price'=>'integer',
+          'quantity'=>'integer',
+          'share_type'=>'string'
        ]);
 
       if($validator->fails()){
@@ -81,11 +90,12 @@ class MySharesController extends Controller
             $my_shares->balance_after_transaction=$request->balance_after_transaction??$my_shares->balance_after_transaction;
             $my_shares->credit_quantity=$request->credit_quantity??$my_shares->credit_quantity;
             $my_shares->price=$request->price??$my_shares->price;
+            $my_shares->share_type=$request->share_type??$my_shares->share_type;
             $my_shares->save();
         }
         return response()->json(['message'=>'successfully updated shares','status'=>true,'data'=>$my_shares],201);
 
-      }catch(Exception $ex){
+      }catch(\Exception $ex){
         return response()->json(['errors'=>'server fail','status'=>false,500]);
       }
      }
@@ -94,8 +104,8 @@ class MySharesController extends Controller
      public function getById($id){
         try{
             $my_shares=MyShares::find($id);
-            return response()->json(['message'=>'successfully get role','status'=>true,'data'=>$my_shares,200]);
-        }catch(Exception $ex){
+            return response()->json(['message'=>'successfully get role','status'=>true,'data'=>MySharesResource::make($my_shares),200]);
+        }catch(\Exception $ex){
             return response()->json(['errors'=>'server fail','status'=>false,500]);
         }
       }
@@ -106,7 +116,7 @@ class MySharesController extends Controller
             $my_shares=MyShares::find($id);
             $my_shares->delete();
             return response()->json(['message'=>'successfully deleted shares','status'=>true,'data'=>$my_shares,200]);
-        }catch(Exception $ex){
+        }catch(\Exception $ex){
             return response()->json(['errors'=>'server fail','status'=>false,500]);
         }
       }
