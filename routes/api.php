@@ -50,9 +50,9 @@ Route::post('/nepse_data/upload-csv', [NepseDataController::class, 'importCsv'])
 
 Route::post('/myshares', [MySharesController::class, 'store']);
 Route::get('/myshares', [MySharesController::class, 'getAll']);
-Route::get('/myshares', [MySharesController::class, 'getById']);
+Route::get('/myshares/{id}', [MySharesController::class, 'getById']);
 Route::put('/myshares', [MySharesController::class, 'update']);
-Route::delete('/myshares', [MySharesController::class, 'delete']);
+Route::delete('/myshares/{id}', [MySharesController::class, 'delete']);
 
 
 Route::post('/login', [AuthController::class, 'login']);
