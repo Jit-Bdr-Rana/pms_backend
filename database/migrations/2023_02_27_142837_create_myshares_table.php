@@ -15,6 +15,7 @@ class CreateMysharesTable extends Migration
     {
         Schema::create('my_shares', function (Blueprint $table) {
             $table->id();
+            $table->string('trans_type');
             $table->string('transaction_date');
             $table->string('share_type');
             $table->integer('quantity');

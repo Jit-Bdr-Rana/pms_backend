@@ -10,5 +10,5 @@ class MyShares extends Model
     use HasFactory;
 
     protected $table = "my_shares";
-    protected $fillable = ['share_type', 'company_id', 'quantity', 'transaction_date', 'debit_quantity', 'balance_after_transaction', 'credit_quantity', 'price'];
+    protected $fillable = ['trans_type', 'user_id', 'share_type', 'company_id', 'quantity', 'transaction_date', 'debit_quantity', 'balance_after_transaction', 'credit_quantity', 'price'];
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\IndexT\ypeController;
 
 
 /*
@@ -53,8 +54,16 @@ Route::get('/myshares', [MySharesController::class, 'getAll']);
 Route::get('/myshares/{id}', [MySharesController::class, 'getById']);
 Route::put('/myshares', [MySharesController::class, 'update']);
 Route::delete('/myshares/{id}', [MySharesController::class, 'delete']);
+Route::delete('/myshares/company/{id}', [MySharesController::class, 'deleteByCompany']);
+Route::get('/myshares/user/{id}', [MySharesController::class, 'getByUserId']);
 
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/current', [AuthController::class, 'current']);
+
+Route::group(['middleware' => ['auth:sanctum']], function ($router) {
+    Route::get('/current', [AuthController::class, 'current']);
+});
 Route::get('/logout', [AuthController::class, 'logout']);
+
+
+Route::post('/index_type', [IndexTypeController::class, 'store']);

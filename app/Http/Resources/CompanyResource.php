@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\NepseData;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CompanyResource extends JsonResource
@@ -15,10 +16,12 @@ class CompanyResource extends JsonResource
     public function toArray($request)
     {
         return
-        [
-            'symbol'=>$this->symbol,
-            'name'=>$this->name,
-            'sector'=>$this->sector
-        ]
+            [
+                'id' => $this->id,
+                'symbol' => $this->symbol,
+                'name' => $this->name,
+                'sector' => $this->sector,
+                'nepse' => NepseData::where('company_id', $this->id)->first()
+            ];
     }
 }

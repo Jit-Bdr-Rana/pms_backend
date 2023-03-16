@@ -14,8 +14,10 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
         "laravel/passport": "^10.0",
+        "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.0",
-        "league/csv": "^9.7"
+        "league/csv": "^9.7",
+        "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
@@ -27,7 +29,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.3.33"
+         }
     },
     "extra": {
         "laravel": {
@@ -60,4 +65,5 @@
             "@php artisan key:generate --ansi"
         ]
     }
+
 }

@@ -25,10 +25,12 @@ class MySharesResource extends JsonResource
                 'debit_quantity' => $this->debit_quantity,
                 'balance_after_transaction' => $this->balance_after_transaction,
                 'credit_quantity' => $this->credit_quantity,
+                'trans_type' => $this->trans_type,
                 'price' => $this->price,
                 'quantity' => $this->quantity,
-                'company' => Company::where('id', $this->company_id)->first(),
-                'user' => User::where('id', $this->user_id)->first()
+                'company' => CompanyResource::make(Company::where('id', $this->company_id)->first()),
+                'user' => User::where('id', $this->user_id)->first(),
+
             ];
     }
 }
