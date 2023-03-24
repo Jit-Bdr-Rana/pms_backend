@@ -16,12 +16,23 @@ class UserSeeder extends Seeder
     public function run()
     {
         $data = [
+            // [
+            //     'full_name' => 'Super Admin',
+            //     'address' => 'gaushala',
+            //     'password' => bcrypt('admin@123'),
+            //     'username' => 'superadmin',
+            //     'email' => 'superadmin@gmail.com',
+            //     'phone' => '9807590188',
+            //     'role_id' => 1,
+            //     "shareholder_type" => 'type',
+            //     'created_at' => Carbon::now()->toDateTimeString()
+            // ],
             [
-                'full_name' => 'Super Admin',
+                'full_name' => 'sudip pandey',
                 'address' => 'gaushala',
                 'password' => bcrypt('admin@123'),
-                'username' => 'superadmin',
-                'email' => 'superadmin@gmail.com',
+                'username' => 'sudip-pandey',
+                'email' => 'pandeysudip02@gmail.com',
                 'phone' => '9807590188',
                 'role_id' => 1,
                 "shareholder_type" => 'type',

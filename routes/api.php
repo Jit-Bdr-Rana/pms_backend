@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\IndexT\ypeController;
 
 
@@ -57,6 +58,8 @@ Route::delete('/myshares/{id}', [MySharesController::class, 'delete']);
 Route::delete('/myshares/company/{id}', [MySharesController::class, 'deleteByCompany']);
 Route::get('/myshares/user/{id}', [MySharesController::class, 'getByUserId']);
 
+
+Route::post('/user', [UserController::class, 'store']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
