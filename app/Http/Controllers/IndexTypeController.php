@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\IndexType;
 use Validator;
 use Exception;
+use League\Csv\Reader;
 
 class IndexTypeController extends Controller
 {
@@ -40,48 +41,54 @@ class IndexTypeController extends Controller
 
     public function importCsv(Request $request)
     {
-        $file = $request->file('csv_file');
+        try {
+            $file = $request->file('csv_file');
 
-        if ($file->isValid()) {
-            // $filePath = $file->getPathname();
+            if ($file->isValid()) {
+                // $filePath = $file->getPathname();
 
-            // $csv = new SplFileObject($filePath);
-            // $csv->setFlags(SplFileObject::READ_CSV);
+                // $csv = new SplFileObject($filePath);
+                // $csv->setFlags(SplFileObject::READ_CSV);
 
-            // dd($csv);
+                // dd($csv);
 
-            // foreach ($csv as $row) {
-            //     // Process each row of the CSV file
-            //     // ...
+                // foreach ($csv as $row) {
+                //     // Process each row of the CSV file
+                //     // ...
 
-            // }
-            $csv = Reader::createFromPath($file->getPathname());
-            $c = [];
-            $isFirst = true;
+                // }
+                $csv = Reader::createFromPath($file->getPathname());
+                $c = [];
+                $isFirst = true;
 
 
-            foreach ($csv as $row) {
-                // Process each row of the CSV file
-                // ...
-                // c[]=$row->BUSINESS_DATE;
+                foreach ($csv as $row) {
+                    // Process each row of the CSV file
+                    // ...
+                    // c[]=$row->BUSINESS_DATE;
 
-                if ($isFirst) {
-                    $isFirst = false;
-                    continue;
+                    if ($isFirst) {
+                        $isFirst = false;
+                        continue;
+                    }
+                    $nepse_data = IndexType::create(
+                        [
+
+                            'type' => $row[1],
+                            'value' => $row[2],
+                            'date' => date('Y-m-d', strtotime($row[0]))
+                        ]
+                    );
+                    array_push($c, $nepse_data);
                 }
-                $nepse_data = IndexType::create(
-                    [
-
-                        'type' => $row[0],
-                        'value' => $row[1],
-                        'date' => $row
-                    ]
-                );
-                array_push($c, $nepse_data);
+                return response()->json(['message' => 'CSV file uploaded and processed.', 'data' => $c]);
+            } else {
+                return response()->json(['error' => 'Invalid file.'], 400);
             }
-            return response()->json(['message' => 'CSV file uploaded and processed.', 'data' => $c]);
-        } else {
-            return response()->json(['error' => 'Invalid file.'], 400);
+
+        } catch (Exception $ex) {
+            return response()->json(['error' => $ex], 500);
+
         }
     }
 }

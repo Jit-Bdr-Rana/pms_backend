@@ -21,13 +21,12 @@ class CurrentUserResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "firstName" => $this->firstname,
-            "lastName" => $this->lastname,
-            "middleName" => $this->middlename,
+            "full_name" => $this->full_name,
             "username" => $this->username,
             "email" => $this->email,
             "address" => $this->address,
             "isActive" => $this->is_active,
+            "role_id" => $this->role_id,
             // 'modules' => DB::table('role_accesses as ra')->select('m.id', 'm.name')->leftJoin('modules as m', 'ra.module_id', '=', 'm.id')->where('ra.role_id', $this->role_id)->where('ra.access', true)->get(),
             // "role"=>new RoleResource(Role::find($this->role_id)),
             "createdAt" => $this->created_at,

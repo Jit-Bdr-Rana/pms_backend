@@ -44,13 +44,10 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'full_name' => 'required|string',
                 'email' => 'required|string|unique:users',
-                'username' => 'required|string|unique:users',
                 'address' => 'string|required',
                 'password' => 'string|required',
                 'phone' => 'string|required',
-                'role_id' => 'integer|required',
-                'shareholder_type' => 'string|required',
-            ], ['firstName.required' => 'firstName is required']);
+            ], ['full_name.required' => 'full_name is required']);
             if ($validator->fails()) {
                 $errors = $validator->errors()->getMessages();
                 foreach ($errors as $key => $value) {
@@ -62,17 +59,17 @@ class UserController extends Controller
                 [
                     'full_name' => $request->full_name,
                     'email' => $request->email,
-                    'username' => $request->username,
+                    'username' => $request->username ?? '',
                     'address' => $request->address,
                     'phone' => $request->phone,
-                    'role_id' => $request->role_id,
-                    'shareholder_type' => $request->shareholder_type,
+                    'role_id' => 2,
+                    'shareholder_type' => 'individual',
                     'password' => bcrypt($request->password)
                 ]
             );
             return response()->json(['message' => 'success', 'data' => $user], 201);
         } catch (Exception $ex) {
-            return $this->serverError();
+            return response()->json(['message' => 'fail', 'error' => $ex], 500);
         }
     }
 

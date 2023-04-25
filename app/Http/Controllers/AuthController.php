@@ -14,6 +14,7 @@ use App\Http\Resources\CurrentUserResource;
 
 class AuthController extends Controller
 {
+
     /**
      * for making user login
      *

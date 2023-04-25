@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\IndexT\ypeController;
+use App\Http\Controllers\IndexTypeController;
 
 
 /*
@@ -70,3 +70,4 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 
 Route::post('/index_type', [IndexTypeController::class, 'store']);
+Route::post('/index_type/import', [IndexTypeController::class, 'importCsv']);
