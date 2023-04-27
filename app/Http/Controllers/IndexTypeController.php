@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MyShares;
 use Illuminate\Http\Request;
 use App\Models\IndexType;
 use Validator;
@@ -10,6 +11,20 @@ use League\Csv\Reader;
 
 class IndexTypeController extends Controller
 {
+
+
+    public function getAll()
+    {
+        try {
+            $indexAll = IndexType::all();
+            $my_shares = MyShares::all();
+            $res['indices'] = $indexAll;
+            $res['my_shares'] = $my_shares;
+            return response()->json(['data' => $res, 'status' => true], 200);
+        } catch (Exception $e) {
+            return response()->json(['errors' => null, 'status' => true], 200);
+        }
+    }
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -60,7 +75,6 @@ class IndexTypeController extends Controller
                 $csv = Reader::createFromPath($file->getPathname());
                 $c = [];
                 $isFirst = true;
-
 
                 foreach ($csv as $row) {
                     // Process each row of the CSV file

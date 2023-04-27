@@ -70,4 +70,5 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 
 Route::post('/index_type', [IndexTypeController::class, 'store']);
+Route::get('/index_type', [IndexTypeController::class, 'getAll']);
 Route::post('/index_type/import', [IndexTypeController::class, 'importCsv']);
