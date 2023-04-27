@@ -17,9 +17,13 @@ class IndexTypeController extends Controller
     {
         try {
             $indexAll = IndexType::all();
-            $my_shares = MyShares::all();
+            $nepse = IndexType::where('type', 'NEPSE')->orderBy('date', 'DESC')->first();
+            $sensid = IndexType::where('type', 'SENSIND')->orderBy('date', 'DESC')->first();
+            $totalinvestment = MyShares::sum('quantity') * MyShares::sum('price');
+            $res['nepse'] = $nepse;
+            $res['sensind'] = $sensid;
+            $res['totalinvestment'] = $totalinvestment;
             $res['indices'] = $indexAll;
-            $res['my_shares'] = $my_shares;
             return response()->json(['data' => $res, 'status' => true], 200);
         } catch (Exception $e) {
             return response()->json(['errors' => null, 'status' => true], 200);
@@ -75,7 +79,7 @@ class IndexTypeController extends Controller
                 $csv = Reader::createFromPath($file->getPathname());
                 $c = [];
                 $isFirst = true;
-
+                IndexType::truncate();
                 foreach ($csv as $row) {
                     // Process each row of the CSV file
                     // ...
@@ -100,6 +104,23 @@ class IndexTypeController extends Controller
                 return response()->json(['error' => 'Invalid file.'], 400);
             }
 
+        } catch (Exception $ex) {
+            return response()->json(['error' => $ex], 500);
+
+        }
+    }
+
+    public function getStat()
+    {
+        try {
+
+            $nepse = IndexType::where('type', 'NEPSE')->orderBy('date', 'DESC')->first();
+            $sensid = IndexType::where('type', 'SENSIND')->orderBy('date', 'DESC')->first();
+            $totalinvestment = MyShares::sum('quantity') * MyShares::sum('price');
+            $res['nepse'] = $nepse;
+            $res['sensid'] = $sensid;
+            $res['totalinvestment'] = $totalinvestment;
+            dd($res);
         } catch (Exception $ex) {
             return response()->json(['error' => $ex], 500);
 
